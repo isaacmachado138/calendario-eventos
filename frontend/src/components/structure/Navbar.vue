@@ -12,7 +12,7 @@
       
       <router-link class="nav-link" to="/" exact>Home</router-link> 
       
-      <router-link class="nav-link" to="/meus-eventos" exact>Eventos</router-link>
+      <!-- <router-link class="nav-link" to="/meus-eventos" exact>Eventos</router-link>-->
       
     </div>
 

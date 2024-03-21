@@ -98,8 +98,9 @@ export default {
       })
         .then(response => {
           if(response.status == 200){ 
-            this.eventos = response.data;
+            //this.eventos = response.data;
             alert("Evento deletado com sucesso!") 
+            location.reload()
           }
         })
         .catch(error => {
