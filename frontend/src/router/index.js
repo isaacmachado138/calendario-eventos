@@ -2,28 +2,32 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login       from '../views/Login.vue'
 import MeusEventos from '../views/MeusEventos.vue'
 import PrimeiroAcesso from '../views/PrimeiroAcesso.vue'
+import authGuard from './authGuard';
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login
-  },
-  {
-    path: '/meus-eventos',
-    name: 'meus-eventos',
-    component: MeusEventos
-    /* // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about"  '../views/AboutView.vue')*/
-
   },
   {
     path: '/primeiro-acesso',
     name: 'primeiro-acesso',
     component: PrimeiroAcesso
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: MeusEventos,
+    beforeEnter: authGuard 
+  },
+  {
+    path: '/',
+    name: 'home',
+    component: MeusEventos,
+    beforeEnter: authGuard 
   }
+
 ]
 
 const router = createRouter({

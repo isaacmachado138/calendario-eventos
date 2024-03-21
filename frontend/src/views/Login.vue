@@ -22,9 +22,9 @@
                 
                 <div class="form-group">
                   
-                  <label for="username">Usuário:</label>
+                  <label for="email">Email:</label>
                   
-                  <input type="text" id="username" v-model="username" class="form-control" required>
+                  <input type="text" id="email" v-model="email" class="form-control" required>
                   
                 </div>
                 
@@ -67,21 +67,56 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+
   data() {
     return {
       name: 'Login',
-      username: '',
+      email: '',
       password: ''
     };
   },
   methods: {
+
     login() {
-      // Lógica de login aqui
-      console.log('Usuário:', this.username);
-      console.log('Senha:', this.password);
-      // Redirecionar para outra página após o login, se necessário
+
+      axios.post('http://localhost:3000/login', {
+          email: this.email,
+          password: this.password 
+      })
+      .then(response => {
+          /*console.log('Resposta:', response); // Verifica a resposta completa
+          console.log(response.status)*/
+          if(response.status == 200){ 
+            alert("Login bem sucedido!")
+            localStorage.setItem('isAuthenticated', "true");
+            localStorage.setItem('userId', response.data.user_id);
+            localStorage.setItem('userName', response.data.user_name);
+            window.location.href = '/';
+          }
+      })
+      .catch(error => {
+        if (error.response) {
+
+          if(error.response.status == 401){
+            alert('Atenção! Email ou senha inválidos.');
+            this.email    = ''
+            this.password = ''
+          } else {
+            alert('Ocorreu um erro na sua solicitação. Por favor, tente novamente mais tarde.');
+          }
+
+        } else if (error.request) {
+          alert('Sem resposta do servidor:', error.request);
+        } else {
+          alert('Erro ao configurar a solicitação:', error.message);
+        }
+
+      });
     }
+
   }
 }
 </script>
