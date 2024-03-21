@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login       from '../views/Login.vue'
 import MeusEventos from '../views/MeusEventos.vue'
 import PrimeiroAcesso from '../views/PrimeiroAcesso.vue'
+import Evento from '../views/Evento.vue'
 import authGuard from './authGuard';
 
 const routes = [
@@ -25,6 +26,12 @@ const routes = [
     path: '/',
     name: 'home',
     component: MeusEventos,
+    beforeEnter: authGuard 
+  },
+  {
+    path: '/evento/:eventId?',
+    name: 'evento',
+    component: Evento,
     beforeEnter: authGuard 
   }
 

@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 
 // Ativar o modo debug para a conexão MySQL
 connection.on('enqueue', (sequence) => {
-  debug('Consulta SQL:', sequence.sql);
+  debug(sequence.sql);
 });
 
 // Conecta ao banco de dados

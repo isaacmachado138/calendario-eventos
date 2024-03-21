@@ -66,5 +66,9 @@ nav a.router-link-exact-active {
   padding: 2rem;
 }
 
+.btn-blue {
+  background-color: #5bb2d4 !important;
+  color: white !important;
+}
 /* Estilos do componente aqui */
 </style>

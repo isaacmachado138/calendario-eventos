@@ -44,7 +44,7 @@
               
               <div class="forgot-password">
                 
-                  <a href="#">Esqueci minha senha</a> |
+                  <!---<a href="#">Esqueci minha senha</a> | -->
                   
                   <a href="/primeiro-acesso">Primeiro acesso</a>
                   
@@ -68,21 +68,27 @@
 
 <script>
 import axios from 'axios';
+import { BACKEND_URL } from '/configAmbiente';
 
 export default {
 
   data() {
     return {
       name: 'Login',
+      type: 'login',
       email: '',
       password: ''
     };
+  },
+  mounted() {
+    // Limpa o localStorage após o componente ter sido montado (carregado)
+    localStorage.clear();
   },
   methods: {
 
     login() {
 
-      axios.post('http://localhost:3000/login', {
+      axios.post(BACKEND_URL+this.type, {
           email: this.email,
           password: this.password 
       })

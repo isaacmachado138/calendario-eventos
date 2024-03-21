@@ -1,37 +1,43 @@
 <template>
 
 <div class="box-eventos  d-flex justify-content-center">
+ 
+  <h2 class="text-center" v-show="eventos != undefined">Lista de Eventos</h2>
 
-  <h2 class="text-center">Lista de Eventos</h2>
+  <div class="no-event" v-show="eventos == undefined">
+    <h2 class="text-center">Você não possui nenhum evento agendado, clique no botão para criar um</h2>
 
-  <table class="table rounded-circle">
+    <a href="/evento" class="btn btn-blue btn-bg">Novo</a>
+  </div>
+ 
+  <table v-show="eventos != undefined" class="table rounded-circle">
 
     <thead >
 
       <tr >
 
         <th scope="col" class="header-eventos">Nome</th>
-        <th scope="col" class="header-eventos">Data</th>
         <th scope="col" class="header-eventos">Início</th>
         <th scope="col" class="header-eventos">Término</th>
-        <th scope="col" class="header-eventos"></th>
+        <th scope="col" class="header-eventos">Organizador</th>
+        <th scope="col" class="header-eventos"><a href="/evento" class="btn btn-dark btn-sm">Novo</a></th>
       </tr>
 
     </thead>
-
+ 
     <tbody>
 
-      <tr v-for="(evento, index) in eventos" :key="index">
-        <td>{{ evento.nome }}</td>
-        <td>{{ evento.data }}</td>
-        <td>{{ evento.hora_inicio }}</td>
-        <td>{{ evento.hora_termino }}</td>
+      <tr v-for="(evento, evento_id) in eventos" :key="evento_id">
+        <td>{{ evento.event_name }}</td>
+        <td>{{ evento.event_start }}</td>
+        <td>{{ evento.event_end }}</td>
+        <td>{{ evento.user_name }}</td> 
         
         <td> 
 
-          <img src="/icons/icon-info.svg"  :title="evento.descricao">
-          <img src="/icons/icon-edit.svg" alt="Editar" title="Editar">
-          <img src="/icons/icon-trash.svg" alt="Deletar" title="Deletar" >
+          <img src="/icons/icon-info.svg"  :title="evento.event_desc">
+          <img v-show="userId == evento.user_id" src="/icons/icon-edit.svg" alt="Editar" title="Editar" @click="editEvent(evento.event_id)">
+          <img v-show="userId == evento.user_id" src="/icons/icon-trash.svg" alt="Deletar" title="Deletar" @click="deleteEvent(evento.event_id)">
 
         </td>
 
@@ -46,33 +52,65 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { BACKEND_URL } from '/configAmbiente';
+
 export default {
   data() {
     return {
       eventos: [], // Array de eventos será retornado e atribuído a esta variável
-      /*idModal: null,
-      nomeModal: '',
-      dataModal: '',
-      horaInicioModal: '',
-      horaTerminoModal: '',
-      isModalOpen: false // Variável para controlar se o modal está aberto ou fechado*/
-
+      type: 'eventList',
+      typeDelete: 'eventDelete',
+      errorMessage: '',
+      userId: localStorage.getItem('userId')
     };
+    
   },
   mounted() {
-    // Aqui você pode fazer uma chamada para buscar os eventos e atualizar a variável eventos com os dados retornados
-    // Por exemplo:
-    this.eventos = this.buscarEventos();
+    this.eventos = this.searchEvents();
   },
   methods: {
-    buscarEventos() {
-      // Simulação de busca de eventos
-      return [
-        { nome: 'Evento 1', data: '11/03/2024', hora_inicio: "19:00", hora_termino: "21:30", descricao: "desc1"},
-        { nome: 'Evento 2', data: '15/03/2024', hora_inicio: "20:00", hora_termino: "21:30", descricao: "desc2" },
-        { nome: 'Evento 3', data: '20/03/2024', hora_inicio: "21:00", hora_termino: "21:30", descricao: "desc3" }
-      ];
+    searchEvents() {
+
+      axios.post(BACKEND_URL+this.type, {
+        user_id: localStorage.getItem('userId')
+      })
+        .then(response => {
+          if(response.status == 200){ 
+            this.eventos = response.data;
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.response.events;
+          if(this.errorMessage == undefined){
+
+          } else {
+            alert('Atenção! Erro ao carregar eventos! ' + this.errorMessage);
+          }
+        });
+
     },
+    deleteEvent(eventId){
+      
+      if(confirm("Tem certeza que deseja deletar esse evento?")){
+        axios.post(BACKEND_URL+this.typeDelete, {
+        event_id: eventId
+      })
+        .then(response => {
+          if(response.status == 200){ 
+            this.eventos = response.data;
+            alert("Evento deletado com sucesso!") 
+          }
+        })
+        .catch(error => {
+          this.errorMessage = error.response.events;
+          alert('Atenção! Erro ao deletar evento! ' + this.errorMessage);
+        });
+      } 
+    },
+    editEvent(eventId){
+      this.$router.push({ name: 'evento', params: { eventId: eventId } });
+    }
   }
 };
 </script>
@@ -81,8 +119,13 @@ export default {
 
 .header-eventos {
   background-color: #5bb2d4 !important;
-  color: white !important; /* opcional: altera a cor do texto para branco para melhorar a visibilidade */
+  color: white !important; 
   font-weight: bold;
+} 
+
+.header-eventos-button {
+  border-top: 0 !important;
+
 } 
 
 .box-eventos {
