@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login       from '../views/Login.vue'
 import MeusEventos from '../views/MeusEventos.vue'
+import PrimeiroAcesso from '../views/PrimeiroAcesso.vue'
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about"  '../views/AboutView.vue')*/
 
+  },
+  {
+    path: '/primeiro-acesso',
+    name: 'primeiro-acesso',
+    component: PrimeiroAcesso
   }
 ]
 

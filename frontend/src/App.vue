@@ -29,7 +29,7 @@ export default {
 }
 </script>
 
-<style>
+<style global>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,6 +37,34 @@ export default {
   text-align: center;
   color: #2c3e50;
 } 
+
+nav {
+  padding: 20px;
+}
+
+nav a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+nav a.router-link-exact-active {
+  color: #5bb2d4;
+}
+
+.card {
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #5bb2d4 !important;
+}
+
+.card-body {
+  padding: 2rem;
+}
 
 /* Estilos do componente aqui */
 </style>
