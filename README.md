@@ -7,7 +7,7 @@ Esse foi um projeto criado para estudos, com a finalidade de aprimoração de ha
 
 ## 🛠️ Construído com
 
-# JavaScript     - A linguagem utilizada
+* JavaScript     - A linguagem utilizada
 * Node.js        - O framework utilizado para o backend
 * Vue.js         - O framework utilizado para o frontend
 * SQL            - Utilizado para criar o banco de dados e salvar as informações do projeto.
